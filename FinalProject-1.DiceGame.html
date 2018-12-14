@@ -235,7 +235,10 @@ Note: Many of the alerts are there just for testing.  For final code, remove and
             
             messagesScore.innerHTML = "Score: " + userScore;
         }
-			document.write(time + "\n");
+			 var time = new Date();
+			var showTime = time.getLocaleTime();
+			
+			document.write(showTime);
         /****************************************************  END OF FUNCTIONS **********************************************/
 
     </script>
