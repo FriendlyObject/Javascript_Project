@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<head>Age Validation</head>
+
+<p> Please input your age: </p>
+
+<input id="numb">
+
+<button type="button" onclick="myFunction()">Submit</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+	var x;
+	var text;
+	
+	x = document.getElementById("numb").value;     
+	
+	if (isNaN(x) || x < 21) {
+		text = "Get a bit older then come back!"; // checks the info inputed in the form
+	} else {
+		alert("Get Ready!");
+		
+		location.href ="FinalProject-1.DiceGame.html"; // set to send you to the game after form
+	}
+	document.getElementById("demo").innerHTML = text;
+	}
+</script>
+
+</body>
+</html>

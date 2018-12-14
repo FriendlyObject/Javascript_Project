@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+	div.dice{
+		float:left;
+		clear:left:
+		width:32px;
+		background: #F5F5F5;
+		border:10px;
+		font-size:24px;
+		text-align:center;
+		margin:5px;
+		}
+	div.dice2{
+		float:left;
+		clear:right;
+		width:32px;
+		background: #F5F5F5;
+		border:10px;
+		font-size:24px;
+		text-align:center;
+		margin:5px;
+		}
+	</style>
+	<title>Full Of Craps</title>
+</head>
+
+<!----------------------------------------------------------------------------------------------------
+Note: Many of the alerts are there just for testing.  For final code, remove and display a graphic
+    dice
+    jpg. announcement.
+------------------------------------------------------------------------------------------------------>
+
+<body>
+    <h1>Full of Craps</h1>
+	
+   <script>
+        //  Variables
+
+        var userPoint = 3; // Records the number from the user's first roll
+        var valueOfDieOne; // Holds the value of the first die
+        var valueOfDieTwo; // Holds the value of the second die
+        var diceTotal; // Holds the sum of the dice roll
+        var preSum; // Holds the sum of the dice roll
+        var sumOfDice; // Holds sum of subsequent dice rolls
+        var endRoll = false; // Ends play
+        var userScore = 0; // Keeps score - 2 point for a win on coming out roll - 1 point for regular win - -1 point for any lose
+        var messagesDirection; // Displays directions
+        var messagesPointUpdate; // Displays roll
+        var messagesScore; // Displays score
+        
+		var setDie1;
+		var setDie2;
+		var rollDie1;
+		var rollDie2;
+		var diceImg = [
+			"Dice1.jpg",
+			"Dice2.jpg",
+			"Dice3.jpg",
+			"Dice4.jpg",
+			"Dice5.jpg",
+			"Dice6.jpg"
+		];	
+        /**************************************************** FUNCTIONS **********************************************/
+
+        // Function to Show Rules of the game.    
+
+        function gameRules() {
+            alert("Rules of the game:" +
+                "\nClick the [ROLL] button to roll the dice" +
+                "\nThe first roll is called the coming out roll." +
+                "\nDuring this roll:" +
+                "\n   if a 7 or 11 is rolled then you win and 2 points is added to your overall score." +
+                "\n   if a 2, 3, or 12 is rolled then you lose and will also lose a point." +
+                "\nIf neither of the above are satisfied then your dice total is held." +
+                "\nFor all subsequent rolls:" +
+                "\n   if any roll matches your first number then you win along with 1 point." +
+                "\n   if a 7 is rolled before your number is matched then you lose and a point is lost.");
+            return;
+        }
+
+        // Function for the coming out roll
+        // Will check if the first roll is a win or loss
+
+        function firstRollIsWinOrLose() {
+           var setDie1 = document.getElementById("setDie1");
+		   var setDie2 = document.getElementById("setDie2");
+		   
+            diceTotal = preSum;
+			
+			setDie1.innerHTML = valueOfDieOne;
+			setDie2.innerHTML = valueOfDieTwo;
+
+            switch (diceTotal) {
+
+                // Losing craps
+
+                case 2:
+                    messagesDirection.innerHTML = "Coming out roll: " + diceTotal + "\nSNAKE EYES! You Lose."; // !!!!!!!Change to picture showing the number rolled and game over. 
+                    break;
+                case 3:
+                    messagesDirection.innerHTML = "Coming out roll: " + diceTotal + "\nSNAKE EYES! You Lose."; // !!!!!!!Change to picture showing the number rolled and game over.
+                    break;
+                case 12:
+                    messagesDirection.innerHTML = "Coming out roll: " + diceTotal + "\nBOX CARS! You Lose."; // !!!!!!!Change to picture showing the number rolled and game over.
+                    break;
+
+                    // Winning Craps
+
+                case 7:
+                    messagesDirection.innerHTML = "Coming out roll: " + diceTotal + "\nSEVEN, Winner, winner, chicken dinner!"; // !!!!!!!Change to picture showing the number rolled and showing winning amount.
+                    break;
+                case 11:
+                    messagesDirection.innerHTML = "Coming out roll: " + diceTotal + "\nELEVEN, Winner, winner, chicken dinner!"; // !!!!!!!Change to picture showing the number rolled and showing winning amount.
+                    break;
+            }
+
+            // Scoring system
+
+            if (preSum == 2 || preSum == 3 || preSum == 12) {
+                userScore--;
+            } else {
+                userScore = userScore + 2;
+            }
+            
+            // Zeros out everything except the score
+            
+            endRoll();
+        }
+
+        // Takes the roll of the dice and adds the sum
+
+        function playerRoll() {
+
+            rollButton.disabled = true;
+            valueOfDieOne = Math.floor(1 + Math.random() * 6);
+            valueOfDieTwo = Math.floor(1 + Math.random() * 6);
+
+            return;
+        }
+        
+        function allOtherRolls() {
+            
+            rollButton.disabled = false;
+            playButton.disabled = true;
+            valueOfDieOne = Math.floor(1 + Math.random() * 6);
+            valueOfDieTwo = Math.floor(1 + Math.random() * 6);
+            sumOfDice = valueOfDieOne + valueOfDieTwo;
+
+            return sumOfDice;
+        }
+        
+
+        // If winning or losing roll is not made on the first then user will roll again
+
+        function subsequentRolls() {
+			var rollDie1 = document.getElementById("rollDie1");
+			var rollDie2 = document.getElementById("rollDie2");
+			rollDie1.innerHTML = valueOfDieOne;
+			rollDie2.innerHTML = valueOfDieTwo;
+			
+
+            allOtherRolls();
+            messagesDirection.innerHTML = "Click ROLL to roll again";
+            messagesPointUpdate.innerHTML = "User Point: " + userPoint + "\nUser roll: " + sumOfDice;
+
+            //Winner is point is rolled
+
+            if (sumOfDice == userPoint) {
+
+            // !!!!!!!Add picture instead of alert
+
+                messagesDirection.innerHTML = "User Point: " + userPoint + "\nUser roll: " + sumOfDice + "\nWinner, winner, chicken dinner!";
+                userScore++;
+                endRoll = true;
+                rollButton.disabled = true;
+                playButton.disabled = false;
+                    
+                // Zeros out everything except the score
+            
+                endRoll();
+            }
+                
+            if (sumOfDice == 7) {
+
+                // !!!!!!!Add picture instead of alert
+
+                messagesPointUpdate.innerHTML = "User Point: " + userPoint + "\nUser roll: " + sumOfDice + "\nCRAPS. You Lose.";
+                userScore--;
+                endRoll = true;
+                rollButton.disabled = true;
+                playButton.disabled = false;
+                  
+                // Zeros out everything except the score
+            
+                endRoll();
+            }
+            return;
+        }
+        
+        function endRoll(){
+            userPoint = 0;
+            sumOfDice = 0;
+             
+            messagesDirection.innerHTML = "Click Play to play again!";
+            messagesPointUpdate.innerHTML = "";
+            messagesScore.innerHTML = "Score: " + userScore;
+        }
+        
+        function playGame(){
+            
+            messagesDirection = document.getElementById( "messagesDirection" );
+            messagesPointUpdate = document.getElementById( "messagesPointUpdate" );
+            messagesScore = document.getElementById( "messagesScore" );
+            messagesScore.innerHTML = "Score: " + userScore;
+            
+            rollButton.disabled = true;
+            playerRoll();
+            preSum = valueOfDieOne + valueOfDieTwo;
+            
+            // Determines route after first roll
+            
+            if (preSum == 2 || preSum == 3 || preSum == 7 || preSum == 11 || preSum == 12) {
+                firstRollIsWinOrLose();
+            } else {
+                playButton.disabled = true;
+                userPoint = preSum;
+                messagesPointUpdate.innerHTML = "User Point is now " + userPoint;
+                rollButton.disabled = false;
+            }
+            
+            messagesScore.innerHTML = "Score: " + userScore;
+        }
+			document.write(time + "\n");
+        /****************************************************  END OF FUNCTIONS **********************************************/
+
+    </script>
+
+    
+	<div id="setDie1" class="dice">0</div>
+	<div id="setDie2"  class="dice">0</div>
+	
+	<div id="rollDie1" class="dice2">0</div>
+	<div id="rollDie2" class="dice2">0</div>
+	
+	
+	<input id="playButton" type="button" value="Play!" onclick="playGame();" />
+    <input id="rollButton" type="button" value="Roll!" onclick="subsequentRolls();" />
+    <input id="helpButton" type="button" value="Rules" onclick="gameRules();" />
+	
+    <p id="messagesDirection">Click PLAY to roll dice.</p>
+    <p id="messagesPointUpdate">Dice Display</p>
+    <p id="messagesScore">Score</p>
+
+</body>
+
+</html>
